@@ -48,12 +48,12 @@ section h2{display:flex;align-items:center;gap:10px;flex-direction:row-reverse;j
 @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 @keyframes fade{from{opacity:0}to{opacity:1}}
 @keyframes reveal{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-header{animation:fade .9s ease-out both}
-header img{animation:rise 1s cubic-bezier(.2,.7,.2,1) both}
-header h1,.tag,.orn,.unit{animation:fade 1s ease-out .25s both}
-.search,.tabs,.hint{animation:fade .8s ease-out .45s both}
-section h2{animation:reveal .6s ease-out both}
-.item{animation:reveal .55s ease-out both}
+header{animation:fade 1.15s ease-out both}
+header img{animation:rise 1.25s cubic-bezier(.2,.7,.2,1) both}
+header h1,.tag,.orn,.unit{animation:fade 1.25s ease-out .3s both}
+.search,.tabs,.hint{animation:fade 1s ease-out .55s both}
+section h2{animation:reveal .75s ease-out both}
+.item{animation:reveal .7s ease-out both}
 @media (prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important}}
 footer{text-align:center;color:var(--muted);font-size:14px;padding:28px 16px 0}
 </style></head>
@@ -93,7 +93,7 @@ CATS.forEach((c, i) => {
   tabs.appendChild(b);
   const s = document.createElement("section"); s.id = id;
   s.innerHTML = `<h2>${icon(c.title)}<span>${esc(c.title)}</span></h2>` + c.items.map((it, k) =>
-    `<div class="item" style="animation-delay:${Math.min(0.7 + (k*0.03), 1.6).toFixed(2)}s" data-search="${esc((it.name+" "+it.desc).toLowerCase())}"><div class="row"><span class="name">${esc(it.name)}</span><span class="price">${fa(it.price)}</span></div>${it.desc ? `<div class="desc">${esc(it.desc)}</div>` : ""}</div>`
+    `<div class="item" style="animation-delay:${Math.min(0.85 + (k*0.04), 1.9).toFixed(2)}s" data-search="${esc((it.name+" "+it.desc).toLowerCase())}"><div class="row"><span class="name">${esc(it.name)}</span><span class="price">${fa(it.price)}</span></div>${it.desc ? `<div class="desc">${esc(it.desc)}</div>` : ""}</div>`
   ).join("");
   menu.appendChild(s);
 });
