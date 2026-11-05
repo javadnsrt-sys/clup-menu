@@ -4,27 +4,33 @@
 <title>منوی کلاپ</title>
 <style>
 @font-face{font-family:"Vazir";src:url("fonts/vazir.woff2") format("woff2");font-weight:100 900;font-display:swap}
-:root{--accent:#225544;--ink:#1c2b26;--muted:#5f6f68;--line:#dbe5e0;--bg:#fff;--soft:#f3f7f5}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--ink:#e8f0ec;--muted:#9fb3aa;--line:#2a3d36;--bg:#111a16;--soft:#18241f;--accent:#7fc4a6}}
-:root[data-theme="dark"]{--ink:#e8f0ec;--muted:#9fb3aa;--line:#2a3d36;--bg:#111a16;--soft:#18241f;--accent:#7fc4a6}
+:root{--accent:#c9a86a;--ink:#efe3c4;--muted:#a9b8ae;--line:rgba(201,168,106,.28);--bg:#0b2219;--soft:#133026}
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{background:var(--bg)}
+html,body{background:#06180f}
+body{background:radial-gradient(ellipse at 50% 0%,#0f2d23 0%,#06180f 70%);min-height:100vh}
 body{font-family:"Vazir",system-ui,sans-serif;color:var(--ink);line-height:1.6;padding-bottom:40px}
 header{text-align:center;padding:28px 16px 14px}
-header img{height:72px;width:auto}
-header h1{font-size:20px;color:var(--accent);margin-top:10px}
+header img{height:84px;width:auto}
+.tag{font-size:11px;letter-spacing:.35em;color:var(--accent);margin-top:6px}
+.orn{display:flex;align-items:center;gap:12px;width:60%;margin:14px auto 0}
+.orn:before,.orn:after{content:"";flex:1;height:1px;background:var(--accent)}
+.orn i{width:7px;height:7px;background:var(--accent);transform:rotate(45deg)}
+header h1{font-size:20px;color:var(--accent);margin-top:12px;font-weight:700}
 .unit{font-size:14px;color:var(--muted);margin-top:4px}
 .search{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 16px 0}
 .search input{width:100%;font:inherit;font-size:16px;padding:10px 14px;border:1px solid var(--line);border-radius:12px;background:var(--soft);color:var(--ink);outline:none}
+.search input::placeholder{color:var(--muted)}
 .search input:focus{border-color:var(--accent)}
 .tabs{display:flex;gap:8px;overflow-x:auto;padding:12px 16px;scrollbar-width:none;position:sticky;top:62px;background:var(--bg);z-index:4;border-bottom:1px solid var(--line)}
 .tabs::-webkit-scrollbar{display:none}
 .tabs button{flex:0 0 auto;font:inherit;font-size:14px;padding:6px 14px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
-.tabs button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.tabs button.on{background:var(--accent);border-color:var(--accent);color:#0b2219;font-weight:700}
 main{padding:8px 16px 0}
 section{padding-top:18px;scroll-margin-top:120px}
-section h2{font-size:18px;color:var(--accent);border-bottom:1.5px solid var(--accent);padding-bottom:6px;margin-bottom:6px}
+section h2{display:flex;align-items:center;gap:10px;flex-direction:row-reverse;justify-content:flex-start;font-size:18px;color:var(--accent);border-bottom:1px solid var(--accent);padding-bottom:8px;margin-bottom:6px;font-weight:700}
+.ic{width:22px;height:22px;flex:0 0 auto;color:var(--accent)}
 .item{padding:12px 0;border-bottom:1px solid var(--line)}
+.desc{color:var(--muted)}
 .row{display:flex;align-items:baseline;gap:10px}
 .name{font-size:16px;font-weight:500;flex:1}
 .price{font-size:16px;font-weight:700;color:var(--accent);white-space:nowrap;direction:ltr;unicode-bidi:isolate}
@@ -35,6 +41,8 @@ footer{text-align:center;color:var(--muted);font-size:14px;padding:28px 16px 0}
 <body>
 <header>
   <img src="logo.png" alt="clup">
+  <div class="tag">CAFE</div>
+  <div class="orn"><i></i></div>
   <h1>منو</h1>
   <div class="unit">قیمت‌ها به هزار تومان می‌باشد</div>
 </header>
@@ -47,6 +55,16 @@ footer{text-align:center;color:var(--muted);font-size:14px;padding:28px 16px 0}
 const CATS = [{"title": "قهوه", "items": [{"name": "اسپرسو", "desc": "", "price": 180}, {"name": "لاته", "desc": "", "price": 230}, {"name": "موکا", "desc": "", "price": 230}, {"name": "آمریکانو", "desc": "", "price": 180}, {"name": "کاپوچینو", "desc": "", "price": 210}, {"name": "کاپو وانیلا", "desc": "", "price": 250}, {"name": "لاته سیروپ دار", "desc": "", "price": 270}, {"name": "چای قهوه", "desc": "چای سیاه، قهوه، 25گرم شیرعسل", "price": 250}, {"name": "آفوگاتو", "desc": "", "price": 250}, {"name": "آفوگاتو پسته", "desc": "", "price": 350}]}, {"title": "ماچا و اوبه", "items": [{"name": "ماچا لاته", "desc": "", "price": 220}, {"name": "آیس ماچا", "desc": "", "price": 240}, {"name": "کوکونات ماچا", "desc": "", "price": 255}, {"name": "انبه ماچا", "desc": "40گرم پوره انبه،شیر و ماچا", "price": 265}, {"name": "ماچا فروت", "desc": "ماچا با مخلوط آبمیوه", "price": 265}, {"name": "استرابری ماچا", "desc": "", "price": 265}, {"name": "اسپرولینا لته", "desc": "", "price": 220}, {"name": "آیس اسپرولینا", "desc": "", "price": 240}, {"name": "اسپرولینا انبه", "desc": "", "price": 265}, {"name": "اسپرولینا توت فرنگی", "desc": "", "price": 265}, {"name": "اوبه", "desc": "", "price": 265}, {"name": "اوبه لته", "desc": "", "price": 220}, {"name": "اوبه انبه", "desc": "", "price": 265}, {"name": "اوبه نارگیل", "desc": "", "price": 265}, {"name": "اوبه توت فرنگی", "desc": "", "price": 265}, {"name": "آیس اوبه", "desc": "", "price": 240}, {"name": "آیس اوبه انبه", "desc": "", "price": 265}, {"name": "آیس اوبه نارگیل", "desc": "", "price": 265}, {"name": "آیس اوبه توت فرنگی", "desc": "", "price": 265}]}, {"title": "چای", "items": [{"name": "چای دمی", "desc": "یک لیوان چای سیاه ساده با نبات", "price": 90}, {"name": "چای فرنچ", "desc": "همراه با نبات و میوه خشک", "price": 140}, {"name": "چای فرنچ زعفران", "desc": "همراه با نبات و میوه خشک", "price": 190}, {"name": "چای لاهیجان", "desc": "همراه با نبات و میوه خشک", "price": 150}, {"name": "چای سفید", "desc": "", "price": 165}, {"name": "چای آرامش", "desc": "", "price": 140}, {"name": "چای سرماخوردگی", "desc": "", "price": 150}, {"name": "چای سبز", "desc": "", "price": 115}, {"name": "چای انرژی", "desc": "", "price": 170}]}, {"title": "بار سرد", "items": [{"name": "آیس لاته", "desc": "", "price": 230}, {"name": "آیس آمریکانو", "desc": "", "price": 180}, {"name": "آیس موکا", "desc": "", "price": 270}, {"name": "کوکونات آیس کافی", "desc": "", "price": 290}, {"name": "استرابری شیکن اسپرسو", "desc": "", "price": 260}]}, {"title": "بار گرم", "items": [{"name": "هات چاکلت", "desc": "", "price": 230}, {"name": "ماسالا", "desc": "", "price": 195}, {"name": "چای انگلیسی", "desc": "", "price": 190}, {"name": "وایت چاکلت", "desc": "", "price": 215}, {"name": "چای کِرک", "desc": "", "price": 195}, {"name": "هات نوتلا", "desc": "", "price": 250}, {"name": "هات لوتوس", "desc": "", "price": 250}, {"name": "هات شکلات فندوق", "desc": "", "price": 220}]}, {"title": "شیک‌ها", "items": [{"name": "کارامل", "desc": "", "price": 215}, {"name": "کارامل نمکی", "desc": "", "price": 220}, {"name": "وانیل", "desc": "", "price": 200}, {"name": "شکلات", "desc": "", "price": 270}, {"name": "موز شکلات", "desc": "", "price": 290}, {"name": "بادام زمینی", "desc": "", "price": 310}, {"name": "شکلات فندوق", "desc": "", "price": 320}, {"name": "نوتلا", "desc": "", "price": 440}, {"name": "لوتوس", "desc": "", "price": 450}, {"name": "نوتلا توت فرنگی", "desc": "", "price": 450}, {"name": "پروشیک", "desc": "", "price": 490}, {"name": "اورئو", "desc": "", "price": 290}]}, {"title": "ماکتیل و اسموتی", "items": [{"name": "موهیتو", "desc": "", "price": 230}, {"name": "لیموناد", "desc": "", "price": 230}, {"name": "چنچر لیمون", "desc": "", "price": 240}, {"name": "لایم بری", "desc": "", "price": 270}, {"name": "کوکی اسموتی", "desc": "", "price": 305}, {"name": "پاور آپ", "desc": "", "price": 365}, {"name": "رد شارژ", "desc": "", "price": 395}, {"name": "شیرموز", "desc": "", "price": 300}, {"name": "اسموتی استوایی", "desc": "پوره انبه، پوره هلو، بستنی", "price": 320}, {"name": "اپل مارتینی", "desc": "پوره سیب و کیوی، آب سیب، لیمو، آب گازدار", "price": 250}, {"name": "پینک لیدی", "desc": "سیروپ توت فرنگی،انار و آب اناناس،لیمو و گازدار", "price": 280}, {"name": "بلو لاگون", "desc": "خامه، لیمو، سیروپ آناناس و بلوکارسوا", "price": 300}]}];
 const fa = n => String(n).replace(/\d/g, d => "۰۱۲۳۴۵۶۷۸۹"[d]);
 const esc = s => s.replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const ICONS = {
+  "قهوه": '<path d="M3 9h13v5a6 6 0 0 1-6 6H9a6 6 0 0 1-6-6z"/><path d="M16 11h2a2.5 2.5 0 0 1 0 5h-2"/><path d="M7 2c0 1.5 1 1.5 1 3M11 2c0 1.5 1 1.5 1 3"/>',
+  "ماچا و اوبه": '<path d="M3 11h18a9 9 0 0 1-18 0z"/><path d="M8 20h8"/><path d="M14 2l-4 7"/>',
+  "چای": '<path d="M5 11h12v6a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4z"/><path d="M17 13h2a2 2 0 0 1 0 4h-2"/><path d="M9 7c0-2 3-2 3-4M12 7c0-2 3-2 3-4"/>',
+  "بار سرد": '<path d="M6 7h12l-1.5 13h-9z"/><path d="M6 11h12"/><path d="M14 7l3-5"/>',
+  "بار گرم": '<path d="M4 9h13v8a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4z"/><path d="M17 11h2a2.5 2.5 0 0 1 0 5h-2"/><path d="M8 2c0 2 1 2 1 4M12 2c0 2 1 2 1 4"/>',
+  "شیک‌ها": '<path d="M7 7h10l-1.5 14h-7z"/><path d="M7 7l1-4h8l1 4"/><path d="M14 3l2-2"/>',
+  "ماکتیل و اسموتی": '<path d="M6 7h12l-1.5 13h-9z"/><path d="M6 11h12"/><path d="M14 7l3-5"/>'
+};
+const icon = t => `<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">${ICONS[t] || ""}</svg>`;
 const menu = document.getElementById("menu"), tabs = document.getElementById("tabs"), q = document.getElementById("q"), empty = document.getElementById("empty");
 CATS.forEach((c, i) => {
   const id = "c" + i;
@@ -54,7 +72,7 @@ CATS.forEach((c, i) => {
   b.onclick = () => document.getElementById(id).scrollIntoView({behavior:"smooth", block:"start"});
   tabs.appendChild(b);
   const s = document.createElement("section"); s.id = id;
-  s.innerHTML = `<h2>${esc(c.title)}</h2>` + c.items.map(it =>
+  s.innerHTML = `<h2>${icon(c.title)}<span>${esc(c.title)}</span></h2>` + c.items.map(it =>
     `<div class="item" data-search="${esc((it.name+" "+it.desc).toLowerCase())}"><div class="row"><span class="name">${esc(it.name)}</span><span class="price">${fa(it.price)}</span></div>${it.desc ? `<div class="desc">${esc(it.desc)}</div>` : ""}</div>`
   ).join("");
   menu.appendChild(s);
