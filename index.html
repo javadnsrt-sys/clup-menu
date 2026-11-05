@@ -4,7 +4,7 @@
 <title>منوی کلاپ</title>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="apple-touch-icon" href="icon-192.png">
 <meta name="theme-color" content="#06180f">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -45,6 +45,16 @@ section h2{display:flex;align-items:center;gap:10px;flex-direction:row-reverse;j
 .price{font-size:16px;font-weight:700;color:var(--accent);white-space:nowrap;direction:ltr;unicode-bidi:isolate}
 .desc{font-size:13px;color:var(--muted);margin-top:2px}
 .empty{text-align:center;color:var(--muted);padding:40px 0;display:none}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes reveal{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+header{animation:fade .9s ease-out both}
+header img{animation:rise 1s cubic-bezier(.2,.7,.2,1) both}
+header h1,.tag,.orn,.unit{animation:fade 1s ease-out .25s both}
+.search,.tabs,.hint{animation:fade .8s ease-out .45s both}
+section h2{animation:reveal .6s ease-out both}
+.item{animation:reveal .55s ease-out both}
+@media (prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important}}
 footer{text-align:center;color:var(--muted);font-size:14px;padding:28px 16px 0}
 </style></head>
 <body>
@@ -82,8 +92,8 @@ CATS.forEach((c, i) => {
   b.onclick = () => { b.scrollIntoView({behavior:"smooth", inline:"center", block:"nearest"}); document.getElementById(id).scrollIntoView({behavior:"smooth", block:"start"}); };
   tabs.appendChild(b);
   const s = document.createElement("section"); s.id = id;
-  s.innerHTML = `<h2>${icon(c.title)}<span>${esc(c.title)}</span></h2>` + c.items.map(it =>
-    `<div class="item" data-search="${esc((it.name+" "+it.desc).toLowerCase())}"><div class="row"><span class="name">${esc(it.name)}</span><span class="price">${fa(it.price)}</span></div>${it.desc ? `<div class="desc">${esc(it.desc)}</div>` : ""}</div>`
+  s.innerHTML = `<h2>${icon(c.title)}<span>${esc(c.title)}</span></h2>` + c.items.map((it, k) =>
+    `<div class="item" style="animation-delay:${Math.min(0.7 + (k*0.03), 1.6).toFixed(2)}s" data-search="${esc((it.name+" "+it.desc).toLowerCase())}"><div class="row"><span class="name">${esc(it.name)}</span><span class="price">${fa(it.price)}</span></div>${it.desc ? `<div class="desc">${esc(it.desc)}</div>` : ""}</div>`
   ).join("");
   menu.appendChild(s);
 });
