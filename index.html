@@ -27,6 +27,10 @@ header h1{font-size:20px;color:var(--accent);margin-top:12px;font-weight:700}
 .search{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 16px 0}
 .search input{width:100%;font:inherit;font-size:16px;padding:10px 14px;border:1px solid var(--line);border-radius:12px;background:var(--soft);color:var(--ink);outline:none}
 .search input::placeholder{color:var(--muted)}
+.srow{display:flex;gap:8px;align-items:center}
+.srow input{flex:1;min-width:0}
+#snd{flex:0 0 auto;font:inherit;font-size:12px;padding:9px 12px;border-radius:12px;border:1px solid var(--line);background:var(--soft);color:var(--muted);cursor:pointer;white-space:nowrap}
+#snd[aria-pressed="true"]{color:var(--accent);border-color:var(--accent)}
 .search input:focus{border-color:var(--accent)}
 .tabs{display:flex;gap:8px;overflow-x:auto;padding:12px 16px;scrollbar-width:none;position:sticky;top:62px;background:var(--bg);z-index:4;border-bottom:1px solid var(--line);scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;scroll-padding:0 16px;mask-image:linear-gradient(to left,transparent 0,#000 16px,#000 calc(100% - 16px),transparent 100%);-webkit-mask-image:linear-gradient(to left,transparent 0,#000 16px,#000 calc(100% - 16px),transparent 100%)}
 .tabs:after{content:'';flex:0 0 1px}
@@ -65,7 +69,7 @@ footer{text-align:center;color:var(--muted);font-size:14px;padding:28px 16px 0}
   <h1>منو</h1>
   <div class="unit">قیمت‌ها به هزار تومان می‌باشد</div>
 </header>
-<div class="search"><input id="q" type="search" placeholder="جستجوی آیتم…" aria-label="جستجو"></div>
+<div class="search"><div class="srow"><input id="q" type="search" placeholder="جستجوی آیتم…" aria-label="جستجو"><button id="snd" type="button" aria-pressed="false">صدای کلیک: خاموش</button></div></div>
 <nav class="tabs" id="tabs" aria-label="دسته‌ها"></nav>
 <div class="hint">برای دیدن بقیه دسته‌ها، انگشت را به چپ یا راست بکشید</div>
 <main id="menu"></main>
@@ -85,11 +89,32 @@ const ICONS = {
   "ماکتیل و اسموتی": '<path d="M6 7h12l-1.5 13h-9z"/><path d="M6 11h12"/><path d="M14 7l3-5"/>'
 };
 const icon = t => `<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">${ICONS[t] || ""}</svg>`;
+let soundOn = false, audioCtx = null;
+try { soundOn = localStorage.getItem("clupSound") === "on"; } catch (e) {}
+function tick() {
+  if (!soundOn) return;
+  try {
+    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    const t = audioCtx.currentTime, o = audioCtx.createOscillator(), g = audioCtx.createGain();
+    o.type = "sine";
+    o.frequency.setValueAtTime(1400, t); o.frequency.exponentialRampToValueAtTime(700, t + 0.04);
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.12, t + 0.005); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.05);
+    o.connect(g).connect(audioCtx.destination); o.start(t); o.stop(t + 0.06);
+  } catch (e) {}
+}
+const sndBtn = document.getElementById("snd");
+function paintSnd() { sndBtn.textContent = "صدای کلیک: " + (soundOn ? "روشن" : "خاموش"); sndBtn.setAttribute("aria-pressed", String(soundOn)); }
+sndBtn.addEventListener("click", () => {
+  soundOn = !soundOn;
+  try { localStorage.setItem("clupSound", soundOn ? "on" : "off"); } catch (e) {}
+  paintSnd(); tick();
+});
+paintSnd();
 const menu = document.getElementById("menu"), tabs = document.getElementById("tabs"), q = document.getElementById("q"), empty = document.getElementById("empty");
 CATS.forEach((c, i) => {
   const id = "c" + i;
   const b = document.createElement("button"); b.textContent = c.title; b.dataset.target = id;
-  b.onclick = () => { b.scrollIntoView({behavior:"smooth", inline:"center", block:"nearest"}); document.getElementById(id).scrollIntoView({behavior:"smooth", block:"start"}); };
+  b.onclick = () => { tick(); b.scrollIntoView({behavior:"smooth", inline:"center", block:"nearest"}); document.getElementById(id).scrollIntoView({behavior:"smooth", block:"start"}); };
   tabs.appendChild(b);
   const s = document.createElement("section"); s.id = id;
   s.innerHTML = `<h2>${icon(c.title)}<span>${esc(c.title)}</span></h2>` + c.items.map((it, k) =>
